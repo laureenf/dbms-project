@@ -1,0 +1,53 @@
+html, body {
+    background-image: url('../images/books1.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    /* height: 100%; */
+}
+
+.layout-content {
+    margin-top: 100px;
+}
+/* home page */
+#home {
+    background-color: rgba(0, 0, 0, 0.8);
+    margin-top: 35vh;
+    padding: 10px;
+    text-align: center;
+}
+
+.font-sizing-h1 {
+    font-size: 3.5vw;
+}
+.font-sizing-h2 {
+    font-size: 3vw;
+}
+
+/* login and register pages */
+.login-section, .register-section {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    /* margin-top: 20vh; */
+}
+
+/* profile page */
+.profile-content {
+    /* background-color: rgba(92, 81, 81, 0.8); */
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+}
+
+.profile-link {
+    color: rgb(179, 175, 170);
+}
+
+.profile-link:hover {
+    color: grey;
+    text-decoration: none;
+}
+
+.hidden-layout {
+    background-color: white;
+    color: black;
+    padding: 10px;
+}
