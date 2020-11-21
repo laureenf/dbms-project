@@ -7,12 +7,12 @@ html, body {
 
 .layout-content {
     margin-top: 100px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
 }
 /* home page */
 #home {
-    background-color: rgba(0, 0, 0, 0.8);
     margin-top: 35vh;
-    padding: 10px;
     text-align: center;
 }
 
@@ -21,20 +21,6 @@ html, body {
 }
 .font-sizing-h2 {
     font-size: 3vw;
-}
-
-/* login and register pages */
-.login-section, .register-section {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    /* margin-top: 20vh; */
-}
-
-/* profile page */
-.profile-content {
-    /* background-color: rgba(92, 81, 81, 0.8); */
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
 }
 
 .profile-link {

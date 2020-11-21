@@ -9,11 +9,9 @@ def load_user(user_id):
         return Admin.query.get(int(user_id))
     elif session['user_type'] == 'librarian':
         return Librarian.query.get(int(user_id))
-    elif session['user_type'] == 'borrower':
-        return Borrower.query.get(int(user_id))
     else:
         return None
-    
+
 class User(db.Model):
     __abstract__ = True
     name = db.Column(db.String(20), nullable=False)
@@ -50,9 +48,10 @@ class Department(db.Model):
     def __repr__(self):
         return f"Dept({self.id}, '{self.name}')"
 
-class Borrower(User, UserMixin):
+class Borrower(db.Model):
     __tablename__ = 'borrower'
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
     dept_id = db.Column(db.Integer, db.ForeignKey('department.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
 

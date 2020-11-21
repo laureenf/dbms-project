@@ -1,36 +1,12 @@
 from functools import wraps
+
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 from lms import app, db, bcrypt
-from lms.forms import RegistrationForm, LoginForm, ChangeFieldForm
+from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm
 from lms.models import Admin, Librarian, Borrower
-
-# def require_role(role):
-#     """make sure user has this role"""
-#     def decorator(func):
-#         @wraps(func)
-#         def wrapped_function(*args, **kwargs):
-#             if not current_user.has_role(role):
-#                 return redirect("/")
-#             else:
-#                 return func(*args, **kwargs)
-#         return wrapped_function
-#     return decorator
-''' DECORATOR TO CHECK IF USER HAS THE RIGHT ROLE TO ACCESS A PAGE '''
-# def login_required(role=None):
-#     def wrapper(fn):
-#         @wraps(fn)
-#         def decorated_view(*args, **kwargs):
-#             if not current_user.is_authenticated:
-#                return app.login_manager.unauthorized()
-#             urole = session.get('user_type')
-#             if role and (urole != role):
-#                 return app.login_manager.unauthorized()      
-#             return fn(*args, **kwargs)
-#         return decorated_view
-#     return wrapper
 
 ''' OPTIONAL
 @app.errorhandler(404)
@@ -68,15 +44,6 @@ def login():
                 return redirect(next_page) if next_page else redirect(url_for('home'))
             else:
                 flash('Invalid email/password', 'danger')
-        elif form.user_type.data == 'bor':
-            session['user_type'] = 'borrower'
-            borrower = Borrower.query.filter_by(email=form.email.data).first()
-            if borrower and bcrypt.check_password_hash(borrower.password, form.password.data):
-                login_user(borrower, remember=form.remember.data)
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('home'))
-            else:
-                flash('Invalid email/password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 '''REGISTRATION OF ADMIN'''
@@ -87,7 +54,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        admin = Admin(username=form.username.data, name=form.name.data, email=form.email.data, password=hashed_pw, institute=form.institute.data)
+        admin = Admin(username=form.username.data, name=form.name.data, email=form.email.data, 
+            password=hashed_pw, institute=form.institute.data.lower())
         db.session.add(admin)
         db.session.commit()
         flash(f'Account created for {form.username.data} from {form.institute.data}! Please login to access', 'success')
@@ -103,16 +71,16 @@ def logout():
 
 
 ''' PROFILE PAGE FOR ALL USERS '''
-@app.route('/profile', methods=['GET', 'POST'], endpoint='profile')
-@login_required
-def profile():
-    form = ChangeFieldForm()
-    if form.validate_on_submit():
-        if bcrypt.check_password_hash(current_user.password, form.password.data):
-            return redirect(url_for('logout'))
+# @app.route('/profile', methods=['GET', 'POST'], endpoint='profile')
+# @login_required
+# def profile():
+#     # form = ChangeFieldForm()
+    # if form.validate_on_submit():
+    #     if bcrypt.check_password_hash(current_user.password, form.password.data):
+    #         return redirect(url_for('logout'))
             # flash('Changes saved! Please login with your new credentials')
             # return redirect(url_for('logout'))
-    return render_template('profile.html', title='My Profile', form=form)
+    # return render_template('profile.html', title='My Profile', form=form)
     
 @app.route('/profile/chng_uname', methods=['GET', 'POST'], endpoint='chng_uname')
 @login_required
@@ -130,10 +98,13 @@ def chng_uname():
 
 ''' ADMIN PAGES '''
 
-@app.route('/admin/add-librarian', endpoint='add_librarian')
+@app.route('/admin/add-librarian', methods=['GET', 'POST'], endpoint='add_librarian')
 @login_required
 def add_librarian():
-    return render_template('add_librarian.html', title='Add Librarian')
+    form = AddLibrarianForm()
+    if form.validate_on_submit():
+        pass
+    return render_template('add_librarian.html', title='Add Librarian', form=form)
 
 @app.route('/admin/remove-librarian', endpoint='remove_librarian')
 @login_required
