@@ -4,9 +4,37 @@
 <title>Admin | View Librarian</title>
 {% endblock %}
 {% block content %}
-<div class="view-librarian">
+<div class="view-librarian text-warning">
     <legend class="border-bottom border-light mb-4">View Librarians</legend>
-    
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark"> 
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Username</th>
+                <th scope="col">Join Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if current_user.librarians == [] %}
+                <tr class="table-light">
+                    
+                    <td colspan="5">-- NIL --</td>
+                </tr>
+            {% else %}
+            {% for librarian in current_user.librarians %}
+                <tr class="table-light">
+                    <th scope="row">{{librarian.id}}</th>
+                    <td>{{librarian.name}}</td>
+                    <td>{{librarian.email}}</td>
+                    <td>{{librarian.username}}</td>
+                    <td>{{librarian.join_date}}</td>
+                </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+      </table>
 </div>
 
 {% endblock %}

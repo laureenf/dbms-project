@@ -138,4 +138,5 @@ def remove_librarian():
 @app.route('/admin/view-librarian', endpoint='view_librarian')
 @login_required
 def view_librarian():
+    print(current_user.librarians)
     return render_template('admin/view_librarian.html', title='View Librarian')
