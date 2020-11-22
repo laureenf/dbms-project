@@ -1,17 +1,21 @@
 from functools import wraps
-
+from sqlalchemy import text
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 from lms import app, db, bcrypt
-from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm
-from lms.models import Admin, Librarian
+from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm, AddStudentForm
+from lms.models import *
+
+db.create_all()
+db.session.execute(text('PRAGMA foreign_keys = ON'))
 
 ''' OPTIONAL
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404 '''
+
 
 ''' LANDING PAGE '''
 @app.route('/')
@@ -105,15 +109,13 @@ def add_librarian():
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         librarian = Librarian(username=form.username.data, name=form.name.data, email=form.email.data, 
-            password=hashed_pw, admin_id=current_user.id)
+            password=hashed_pw, admin_id=current_user.id, address=form.address.data, contact_no=form.contact_no.data)
         db.session.add(librarian)
         db.session.commit()
         flash(f'Account created for {form.username.data} from {current_user.institute}! Please login to access', 'success')
         return redirect(url_for('add_librarian'))
     return render_template('admin/add_librarian.html', title='Add Librarian', form=form)
 
-
-''' format pls '''
 @app.route('/admin/remove-librarian', methods=['GET', 'POST'], endpoint='remove_librarian')
 @login_required
 def remove_librarian():
@@ -138,5 +140,56 @@ def remove_librarian():
 @app.route('/admin/view-librarian', endpoint='view_librarian')
 @login_required
 def view_librarian():
-    print(current_user.librarians)
     return render_template('admin/view_librarian.html', title='View Librarian')
+
+'''END OF ADMIN PAGES'''
+
+'''LIBRARIAN PAGES'''
+#student functions
+@app.route('/librarian/add-student', methods=['GET', 'POST'], endpoint='add_student')
+@login_required
+def add_student():
+    form = AddStudentForm()
+    if form.validate_on_submit():
+        dept = Department.query.filter_by(name=form.dept.data).first()
+        if dept:
+            student = Student(name=form.name.data, year=form.year.data, address=form.address.data, 
+             contact_no=form.contact_no.data, dept=dept, admin=current_user.admin)
+        else:
+            dept = Department(name=form.dept.data)
+            student = Student(name=form.name.data, year=form.year.data, address=form.address.data, 
+             contact_no=form.contact_no.data, dept=dept, admin=current_user.admin)
+            db.session.add(dept)
+            db.session.commit()
+        db.session.add(student)
+        db.session.commit()
+        flash('Student record created', 'success')
+        return redirect(url_for('add_student'))
+    return render_template('librarian/add_student.html', form=form, title='Add Student')
+
+@app.route('/librarian/remove-student', endpoint='remove_student')
+@login_required
+def remove_student():
+    return render_template('home.html', title='Remove Student')
+
+@app.route('/librarian/view-student', endpoint='view_student')
+@login_required
+def view_student():
+    return render_template('home.html')
+
+#book functions
+@app.route('/librarian/add-book', endpoint='add_book')
+@login_required
+def add_book():
+    return render_template('add_book.html')
+
+@app.route('/librarian/remove-book', endpoint='remove_book')
+@login_required
+def remove_book():
+    return render_template('home.html')
+
+@app.route('/librarian/view-book', endpoint='view_book')
+@login_required
+def view_book():
+    return render_template('home.html')
+'''END OF LIBRARIAN PAGES'''

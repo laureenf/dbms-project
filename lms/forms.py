@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
-from lms.models import Admin, Librarian, Borrower
+from lms.models import Admin, Librarian
 
 class Base():
     def validate_email(self, email):
@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm, Base):
         DataRequired(), Length(min=3, max=20, message='Name must be between 3 and 20 characters')])
     username = StringField('Username', validators=[
         DataRequired(), Length(min=3, max=20), 
-        Regexp('^\w+$', message='Username must contain only letters, numbers, underscores')])
+        Regexp(r'^\w+$', message='Username must contain only letters, numbers, underscores')])
     email = StringField('Email', validators=[
         Email(), DataRequired()])
     password = PasswordField('Password', validators=[
@@ -90,8 +90,33 @@ class AddLibrarianForm(FlaskForm, Base):
         Email(), DataRequired()])
     password = PasswordField('Password', validators=[
         DataRequired()])
+    address = StringField('Address', validators=[
+        DataRequired(), Length(min=3, message='Address must be more than 3 characters long')])
+    contact_no = StringField('Contact No', validators=[
+        DataRequired(), 
+        Regexp(r'^\d{10}$', message='Contact no must contain 10 digits')])
     submit = SubmitField('Add Librarian') 
 
     def validate_join_date(self, join_date):
         if str(join_date.data) < '1970-01-01' or str(join_date.data) > str(date.today()):
             raise ValidationError('Invalid date')
+
+class AddStudentForm(FlaskForm):
+    name = StringField('Name', validators=[
+        DataRequired(), Length(min=3, max=20, message='Name must be between 3 and 20 characters')])
+    year = SelectField('Year', choices=[('1', '1st'), ('2', '2nd'), ('3', '3rd'), ('4', '4th')])
+    address = StringField('Address', validators=[
+        DataRequired(), Length(min=3, message='Address must be more than 3 characters long')])
+    contact_no = StringField('Contact No', validators=[
+        DataRequired(), 
+        Regexp(r'^\d{10}$', message='Contact no must contain 10 digits')])
+    dept = SelectField('Department', 
+        choices=[('cse', 'CSE'), ('ece', 'ECE'), ('eee', 'EEE'), ('me', 'ME'), ('mca', 'MCA')])
+    submit = SubmitField('Add Student')
+
+    def validate_year(self, year):
+        if self.dept.data == 'mca' and (year.data == '3' or year.data == '4'):
+            raise ValidationError('Duration of MCA is 2 years')
+    
+    
+    

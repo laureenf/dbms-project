@@ -6,6 +6,7 @@
 {% block content %}
 <div class="view-librarian text-warning">
     <legend class="border-bottom border-light mb-4">View Librarians</legend>
+    <div class="table-responsive">
     <table class="table table-hover table-bordered">
         <thead class="thead-dark"> 
             <tr>
@@ -14,6 +15,8 @@
                 <th scope="col">Email</th>
                 <th scope="col">Username</th>
                 <th scope="col">Join Date</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact No</th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +33,14 @@
                     <td>{{librarian.email}}</td>
                     <td>{{librarian.username}}</td>
                     <td>{{librarian.join_date}}</td>
+                    <td>{{librarian.address}}</td>
+                    <td>{{librarian.contact_no}}</td>
                 </tr>
             {% endfor %}
             {% endif %}
         </tbody>
-      </table>
+    </table>
+    </div>
 </div>
 
 {% endblock %}

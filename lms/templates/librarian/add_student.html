@@ -1,27 +1,15 @@
 {% extends 'layout.html' %}
-{% set active_page = "add_librarian" %}
+{% set active_page = "add_student" %}
 {% block title %}
-<title>Admin | Add Librarian</title>
+<title>Librarian | Add Student</title>
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post" class="text-warning add-librarian">
+<div class="add-student">
+    <form action="" method="post" class="text-warning">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom border-light mb-4">{{ title }}</legend>
-            <div class="form-group">
-                {{form.join_date.label(class="form-control-label")}}
-                {% if form.join_date.errors %}
-                    {{form.join_date(class="form-control form-control-lg is-invalid")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.join_date.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{form.join_date(class="form-control form-control-lg")}}
-                {% endif %}
-            </div>
             <div class="form-group">
                 {{form.name.label(class="form-control-label")}}
                 {% if form.name.errors %}
@@ -36,42 +24,29 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                {{form.username.label(class="form-control-label")}}
-                {% if form.username.errors %}
-                    {{form.username(class="form-control form-control-lg is-invalid")}}
+                {{form.dept.label(class="form-control-label")}}
+                {% if form.dept.errors %}
+                    {{form.dept(class="form-control form-control-lg is-invalid")}}
                     <div class="invalid-feedback">
-                        {%for error in form.username.errors %}
+                        {%for error in form.dept.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{form.username(class="form-control form-control-lg")}}
+                    {{form.dept(class="form-control form-control-lg")}}
                 {% endif %}
             </div>
             <div class="form-group">
-                {{form.email.label(class="form-control-label")}}
-                {% if form.email.errors %}
-                    {{form.email(class="form-control form-control-lg is-invalid")}}
+                {{form.year.label(class="form-control-label")}}
+                {% if form.year.errors %}
+                    {{form.year(class="form-control form-control-lg is-invalid")}}
                     <div class="invalid-feedback">
-                        {%for error in form.email.errors %}
+                        {%for error in form.year.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{form.email(class="form-control form-control-lg")}}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{form.password.label(class="form-control-label")}}
-                {% if form.password.errors %}
-                    {{form.password(class="form-control form-control-lg is-invalid")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.password.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{form.password(class="form-control form-control-lg")}}
+                    {{form.year(class="form-control form-control-lg")}}
                 {% endif %}
             </div>
             <div class="form-group">
@@ -106,5 +81,5 @@
             
         </div>
     </form>
-
+</div>
 {% endblock %}

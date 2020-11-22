@@ -19,6 +19,8 @@
     <p>Name: {{ librarian.name }}</p>
     <p>Username: {{ librarian.username }}</p>
     <p>Email: {{ librarian.email }}</p>
+    <p>Address: {{ librarian.address }}</p>
+    <p>Contact no: {{ librarian.contact_no }}</p>
     <p>Join Date: {{ librarian.join_date }}</p>
     <input type="hidden" name="id" value="{{librarian.id}}">
     <button type="submit" name='remove' onclick="{{ url_for('remove_librarian') }}" class="btn btn-warning mr-2">Remove?</button>
