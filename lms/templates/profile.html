@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% set active_page = "profile" %}
+{% block title %}
+<title> | </title>
+{% endblock %}
 {% block content %}
     <div class="profile-content text-warning">
         <h2 class="border-bottom pb-2 mb-4">{{ title }} - {{ current_user.name }}</h2>

@@ -9,14 +9,12 @@ from lms.models import Admin, Librarian, Borrower
 class Base():
     def validate_email(self, email):
         if Admin.query.filter_by(email=email.data.lower()).first() or \
-        Librarian.query.filter_by(email=email.data.lower()).first() or \
-        Borrower.query.filter_by(email=email.data.lower()).first():
+        Librarian.query.filter_by(email=email.data.lower()).first():
             raise ValidationError('This email has already been registered. Please choose a different one.')
     
     def validate_username(self, username):
         if Admin.query.filter_by(username=username.data.lower()).first() or \
-        Librarian.query.filter_by(username=username.data.lower()).first() or \
-        Borrower.query.filter_by(username=username.data.lower()).first():
+        Librarian.query.filter_by(username=username.data.lower()).first():
             raise ValidationError('This username has already been registered. Please choose a different one.')
 
 class RegistrationForm(FlaskForm, Base):
@@ -43,7 +41,7 @@ class RegistrationForm(FlaskForm, Base):
 
 
 class LoginForm(FlaskForm):
-    user_type = SelectField('Login as ', choices=[('adm', 'Admin'), ('lib', 'Librarian'), ('bor', 'Borrower')]) 
+    user_type = SelectField('Login as ', choices=[('adm', 'Admin'), ('lib', 'Librarian')]) 
     email = StringField('Email', validators=[
         Email(), DataRequired()])
     password = PasswordField('Password', validators=[
@@ -92,9 +90,8 @@ class AddLibrarianForm(FlaskForm, Base):
         Email(), DataRequired()])
     password = PasswordField('Password', validators=[
         DataRequired()])
-    submit = SubmitField('Add Librarian')
+    submit = SubmitField('Add Librarian') 
 
     def validate_join_date(self, join_date):
-        # start_date = datetime.strptime(, '%Y-%m-%d')
         if str(join_date.data) < '1970-01-01' or str(join_date.data) > str(date.today()):
             raise ValidationError('Invalid date')

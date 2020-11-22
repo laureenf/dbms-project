@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% set active_page = "login" %}
+{% block title %}
+<title>LMS | Login</title>
+{% endblock %}
 {% block content %}
 <div class="login-section text-warning ">
     <form action="" method="post">
@@ -44,7 +47,7 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{form.submit(class="btn btn-outline-warning")}}
+            {{form.submit(class="btn btn-warning")}}
         </div>
     </form>
     <div class="border-top pt-3">

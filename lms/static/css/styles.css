@@ -5,15 +5,22 @@ html, body {
     /* height: 100%; */
 }
 
+/* main container */
 .layout-content {
     margin-top: 100px;
+}
+
+/* home page */
+.home {
+    margin-top: 30vh;
     background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
     padding: 20px;
 }
-/* home page */
-#home {
-    margin-top: 35vh;
-    text-align: center;
+
+.login-section, .register-section, .add-librarian, .remove-librarian {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 15px;
 }
 
 .font-sizing-h1 {

@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 {% set active_page = "add_librarian" %}
 {% block title %}
-<title>add librarian</title>
+<title>Admin | Add Librarian</title>
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post" class="text-warning">
+    <form action="" method="post" class="text-warning add-librarian">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom border-light mb-4">{{ title }}</legend>
@@ -76,7 +76,8 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{form.submit(class="btn btn-outline-warning")}}
+            {{form.submit(class="btn btn-warning")}}
+            
         </div>
     </form>
 

@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% set active_page = "register" %}
+{% block title %}
+<title>LMS | Register</title>
+{% endblock %}
 {% block content %}
 <div class="register-section text-warning">
     <form action="" method="post">
@@ -90,7 +93,7 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{form.submit(class="btn btn-outline-warning")}}
+            {{form.submit(class="btn btn-warning")}}
         </div>
     </form>
     <div class="border-top pt-3">

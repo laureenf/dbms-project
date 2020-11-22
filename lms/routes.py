@@ -6,7 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from lms import app, db, bcrypt
 from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm
-from lms.models import Admin, Librarian, Borrower
+from lms.models import Admin, Librarian
 
 ''' OPTIONAL
 @app.errorhandler(404)
@@ -103,15 +103,39 @@ def chng_uname():
 def add_librarian():
     form = AddLibrarianForm()
     if form.validate_on_submit():
-        pass
-    return render_template('add_librarian.html', title='Add Librarian', form=form)
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        librarian = Librarian(username=form.username.data, name=form.name.data, email=form.email.data, 
+            password=hashed_pw, admin_id=current_user.id)
+        db.session.add(librarian)
+        db.session.commit()
+        flash(f'Account created for {form.username.data} from {current_user.institute}! Please login to access', 'success')
+        return redirect(url_for('add_librarian'))
+    return render_template('admin/add_librarian.html', title='Add Librarian', form=form)
 
-@app.route('/admin/remove-librarian', endpoint='remove_librarian')
+
+''' format pls '''
+@app.route('/admin/remove-librarian', methods=['GET', 'POST'], endpoint='remove_librarian')
 @login_required
 def remove_librarian():
-    return render_template('remove_librarian.html', title='Remove Librarian')
+    form = request.form
+    if form:
+        if form.get('email') == '' and form.get('remove') == '':
+            #delete the record
+            id = form.get('id')
+            Librarian.query.filter_by(id=id).delete()
+            db.session.commit()
+            flash('Librarian account deleted', 'success')
+        elif form.get('cancel') == '':
+            return redirect(url_for('remove_librarian'))
+        else:
+            librarian = Librarian.query.filter_by(email=form.get('email')).first()
+            if librarian:
+                return render_template('admin/remove_librarian.html', title='Remove Librarian', librarian=librarian)
+            else:
+                flash('Librarian record does not exist', 'danger')
+    return render_template('admin/remove_librarian.html', title='Remove Librarian', librarian=None)
 
 @app.route('/admin/view-librarian', endpoint='view_librarian')
 @login_required
 def view_librarian():
-    return render_template('view_librarian.html', title='View Librarian')
+    return render_template('admin/view_librarian.html', title='View Librarian')

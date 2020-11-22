@@ -22,7 +22,7 @@
             {% if current_user.is_authenticated %}
             
             <li class="nav-item {{ 'active' if active_page == 'profile' }}">
-                <a class="nav-link text-center" href="{{ url_for('profile') }}">My Profile</a>
+                <a class="nav-link text-center" href="{{ url_for('home') }}">{{ current_user.username}}</a>
             </li>
             <li class="nav-item {{ 'active' if active_page == 'logout'}}">
                 <a class="nav-link text-center" href="{{ url_for('logout') }}">Logout</a>

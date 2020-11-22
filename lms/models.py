@@ -24,9 +24,6 @@ class Admin(User, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     institute = db.Column(db.String(50), unique=True, nullable=False)
 
-    def is_authenticated(self):
-        return self.is_authenticated
-
     def __repr__(self):
         return f"Admin('{self.name}', '{self.email}', '{self.institute}')"
 
@@ -36,7 +33,7 @@ class Librarian(User, UserMixin):
     join_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
 
-    institute = db.relationship('Admin', backref='librarians', foreign_keys=[admin_id])
+    admin = db.relationship('Admin', backref='librarians', foreign_keys=[admin_id])
 
     def __repr__(self):
         return f"Librarian('{self.name}', '{self.email}', {self.join_date})"
@@ -56,10 +53,10 @@ class Borrower(db.Model):
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
 
     dept = db.relationship('Department', foreign_keys=[dept_id])
-    institute = db.relationship('Admin', backref='borrowers', foreign_keys=[admin_id])
+    admin = db.relationship('Admin', backref='borrowers', foreign_keys=[admin_id])
 
     def __repr__(self):
-        return f"Borrower('{self.name}', '{self.email}', '{self.dept.name}')"
+        return f"Borrower('{self.name}', '{self.admin.institute}', '{self.dept.name}')"
 
 # Association table for author and book
 # author_books = db.Table('author_books',
