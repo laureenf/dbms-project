@@ -16,9 +16,15 @@
           <h2 class="font-sizing-h2">
               {% if current_user.is_authenticated %}
               Please select any option to continue :)
+              
               {% else %}
               Register today to get started, or Login if you already have an account!
               {% endif %}
           </h2>
+          {% if session['user_type'] == 'librarian' %}
+                <div class="mt-4"><button type="button" class="btn btn-lg btn-light mr-4">Book Issue</button>
+                
+                <button type="button" class="btn btn-lg btn-secondary">Book Return</button></div>
+          {% endif %}
       </div>
         {% endblock %}
