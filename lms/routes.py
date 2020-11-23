@@ -121,16 +121,16 @@ def add_librarian():
 def remove_librarian():
     form = request.form
     if form:
-        if form.get('email') == '' and form.get('remove') == '':
+        if form.get('id') == '' and form.get('remove') == '':
             #delete the record
-            id = form.get('id')
+            id = form.get('id1')
             Librarian.query.filter_by(id=id).delete()
             db.session.commit()
             flash('Librarian account deleted', 'success')
         elif form.get('cancel') == '':
             return redirect(url_for('remove_librarian'))
         else:
-            librarian = Librarian.query.filter_by(email=form.get('email')).first()
+            librarian = Librarian.query.filter_by(id=form.get('id')).first()
             if librarian:
                 return render_template('admin/remove_librarian.html', title='Remove Librarian', librarian=librarian)
             else:
@@ -152,6 +152,7 @@ def add_student():
     form = AddStudentForm()
     if form.validate_on_submit():
         dept = Department.query.filter_by(name=form.dept.data).first()
+        #if dept exists, just add student record else, create dept and then add student record
         if dept:
             student = Student(name=form.name.data, year=form.year.data, address=form.address.data, 
              contact_no=form.contact_no.data, dept=dept, admin=current_user.admin)
@@ -167,15 +168,31 @@ def add_student():
         return redirect(url_for('add_student'))
     return render_template('librarian/add_student.html', form=form, title='Add Student')
 
-@app.route('/librarian/remove-student', endpoint='remove_student')
+@app.route('/librarian/remove-student', methods=['GET', 'POST'], endpoint='remove_student')
 @login_required
 def remove_student():
-    return render_template('home.html', title='Remove Student')
+    form = request.form
+    if form:
+        if form.get('id') == '' and form.get('remove') == '':
+            #delete the record
+            id = form.get('id1')
+            Student.query.filter_by(id=id).delete()
+            db.session.commit()
+            flash('Student record deleted', 'success')
+        elif form.get('cancel') == '':
+            return redirect(url_for('remove_student'))
+        else:
+            student = Student.query.filter_by(id=form.get('id')).first()
+            if student:
+                return render_template('librarian/remove_student.html', title='Remove student', student=student)
+            else:
+                flash('Student record does not exist', 'danger')
+    return render_template('librarian/remove_student.html', title='Remove Student', student=None)
 
 @app.route('/librarian/view-student', endpoint='view_student')
 @login_required
 def view_student():
-    return render_template('home.html')
+    return render_template('view_student.html')
 
 #book functions
 @app.route('/librarian/add-book', endpoint='add_book')
