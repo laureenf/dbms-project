@@ -1,9 +1,9 @@
 from datetime import datetime, date
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField, IntegerField, FloatField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError, NumberRange
 from lms.models import Admin, Librarian
 
 class Base():
@@ -111,12 +111,27 @@ class AddStudentForm(FlaskForm):
         DataRequired(), 
         Regexp(r'^\d{10}$', message='Contact no must contain 10 digits')])
     dept = SelectField('Department', 
-        choices=[('cse', 'CSE'), ('ece', 'ECE'), ('eee', 'EEE'), ('me', 'ME'), ('mca', 'MCA')])
+        choices=[('cse', 'CSE'), ('ece', 'ECE'), ('eee', 'EEE'), ('me', 'ME'), ('civ', 'CIVIL'), ('mca', 'MCA'), ('mba', 'MBA')])
     submit = SubmitField('Add Student')
 
     def validate_year(self, year):
         if self.dept.data == 'mca' and (year.data == '3' or year.data == '4'):
             raise ValidationError('Duration of MCA is 2 years')
-    
-    
+
+class AddBookForm(FlaskForm):
+    name = StringField('Name', validators=[
+        DataRequired(), Length(min=3, max=20, message='Name must be between 3 and 20 characters')])
+    authors = StringField('Author(s)', validators=[
+        DataRequired()])
+    dept = SelectField('Department', 
+        choices=[('cse', 'CSE'), ('ece', 'ECE'), ('eee', 'EEE'), ('me', 'ME'), ('mca', 'MCA'), ('mba', 'MBA'),
+        ('mat', 'MATH'), ('chem', 'CHEMISTRY'), ('phy', 'PHYSICS'), ('eng', 'ENGLISH')])
+    edition = IntegerField('Edition', validators=[
+        DataRequired(), NumberRange(min=1, message='Edition has to be greater than or equal to 1')])
+    price = FloatField('Price', validators=[
+        DataRequired(), NumberRange(min=1, message='Price has to be positive')])
+    copies_available = IntegerField('Copies Available', validators=[
+        DataRequired(), NumberRange(min=1, message='Copies available has to be greater than or equal to 1')])
+    submit = SubmitField('Add Book')
+
     

@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 from lms import app, db, bcrypt
-from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm, AddStudentForm
+from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm, AddStudentForm, AddBookForm
 from lms.models import *
 
 db.create_all()
@@ -195,10 +195,38 @@ def view_student():
     return render_template('librarian/view_student.html')
 
 #book functions
-@app.route('/librarian/add-book', endpoint='add_book')
+@app.route('/librarian/add-book', methods=['GET', 'POST'], endpoint='add_book')
 @login_required
 def add_book():
-    return render_template('add_book.html')
+    form = AddBookForm()
+    if form.validate_on_submit():
+        book = Book(name=form.name.data, edition=form.edition.data, price=form.price.data)
+        #add dept
+        dept = Department.query.filter_by(name=form.dept.data.lower()).one_or_none()
+        if not dept:
+            dept = Department(name=form.dept.data)
+            db.session.add(dept)
+            db.session.commit()
+        book.dept = dept
+        #add authors
+        authors_book = [author.strip() for author in form.authors.data.split(',')]
+        for author in authors_book:
+            authr = Author.query.filter_by(name=author).one_or_none()
+            if not authr:
+                authr = Author(name=author)
+                book.authors.append(authr)
+                db.session.add(authr)
+        db.session.add(book)
+        db.session.commit()
+        #add copies available
+        inst_book = InstituteBooks(copies_available=form.copies_available.data)
+        inst_book.admin = current_user.admin
+        inst_book.book = book
+        db.session.add(inst_book)
+        db.session.commit()
+        flash('Book record created', 'success')
+        return redirect(url_for('add_book'))
+    return render_template('librarian/add_book.html', form=form, title='Add Book')
 
 @app.route('/librarian/remove-book', endpoint='remove_book')
 @login_required

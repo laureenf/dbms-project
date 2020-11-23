@@ -19,13 +19,12 @@ html, body {
 }
 
 /* bg and padding for all sections */
-.login-section, .register-section, .add-librarian, .remove-librarian, .view-librarian,
-.add-student, .remove-student, .view-student {
+.section-content {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 15px;
 }
 
-/* center nil when table is empty */
+/* center nil when table for view is empty */
 td[colspan]:not([colspan="1"]) {
     text-align: center;
 }
