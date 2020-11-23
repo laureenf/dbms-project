@@ -192,7 +192,7 @@ def remove_student():
 @app.route('/librarian/view-student', endpoint='view_student')
 @login_required
 def view_student():
-    return render_template('view_student.html')
+    return render_template('librarian/view_student.html')
 
 #book functions
 @app.route('/librarian/add-book', endpoint='add_book')

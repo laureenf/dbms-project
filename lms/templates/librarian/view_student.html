@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% set active_page = "view" %}
+{% block title %}
+<title>Librarian | View Student</title>
+{% endblock %}
+{% block content %}
+<div class="view-student text-warning">
+    <legend class="border-bottom border-light mb-4">View Students</legend>
+    <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark"> 
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact No</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if current_user.admin.students == [] %}
+                <tr class="table-light">
+                    <td colspan="6">-- NIL --</td>
+                </tr>
+            {% else %}
+            {% for student in current_user.admin.students %}
+                <tr class="table-light">
+                    <th scope="row">{{student.id}}</th>
+                    <td>{{student.name}}</td>
+                    <td>{{student.dept.name.upper()}}</td>
+                    <td>{{student.year}}</td>
+                    <td>{{student.address}}</td>
+                    <td>{{student.contact_no}}</td>
+                </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% endblock %}
