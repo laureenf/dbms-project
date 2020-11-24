@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% set active_page = "remove" %}
+{% block title %}
+<title>Librarian | Remove Book</title>
+{% endblock %}
+
+{% block content %}
+<div class="section-content text-warning">
+    <form action="{{ url_for('remove_book') }}" method="POST">
+        <fieldset class="form-group">
+            <legend class="border-bottom border-light mb-4">Remove Book</legend>
+            <div class="form-group">
+                <label for="">Enter Book ID</label>
+                <input type="number" class="form-control" name="id" id="" >
+            </div>
+            <div class="form-group">
+                <label for="">Enter no of copies to be deleted</label>
+                <input type="number" class="form-control" name="copies" id="" >
+            </div>
+            <button type="submit" class="btn btn-warning">Submit</button>
+            {% if inst_book != None %}
+            <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
+            
+            <p>Name: {{ inst_book.book.name }}</p>
+            <p>Author(s): {{inst_book.book.get_authors()}}</p>
+            <p>Department: {{ inst_book.book.dept.name.upper() }}</p>
+            <p>Edition: {{ inst_book.book.edition }}</p>
+            <p>Price: {{ inst_book.book.price }}</p>
+            <p>Available Copies: {{inst_book.copies_available}}</p>
+            <p>Copies to be Deleted: {{copies}}</p>
+            <input type="hidden" name="id1" value="{{inst_book.book_id}}">
+            <input type="hidden" name="copies1" value="{{copies}}">
+            <button type="submit" name='remove' onclick="{{ url_for('remove_librarian') }}" class="btn btn-warning mr-2">Remove?</button>
+            <button type="submit" name='cancel' onclick="{{ url_for('remove_librarian') }}" class="btn btn-secondary">Cancel</button>
+            {% endif %} 
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

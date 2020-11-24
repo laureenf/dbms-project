@@ -103,9 +103,14 @@ class Book(db.Model):
     dept = db.relationship('Department', foreign_keys=[dept_id]) 
     authors = db.relationship('Author', secondary=author_books)
     
-
     def __repr__(self):
-        return f"Book({self.name}, {self.edition}, {self.price}, '{self.dept.name}', {self.no_of_copies})"
+        return f"Book({self.name}, {self.edition}, {self.price}, '{self.dept.name}')"
+
+    def get_authors(self):
+        authors = []
+        for author in self.authors:
+            authors.append(author.name)
+        return ', '.join(authors)
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)

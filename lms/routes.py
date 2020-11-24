@@ -228,13 +228,46 @@ def add_book():
         return redirect(url_for('add_book'))
     return render_template('librarian/add_book.html', form=form, title='Add Book')
 
-@app.route('/librarian/remove-book', endpoint='remove_book')
+@app.route('/librarian/remove-book', methods=['GET', 'POST'], endpoint='remove_book')
 @login_required
 def remove_book():
-    return render_template('home.html')
+    form = request.form
+    if form:
+        if form.get('id'):
+            #print details
+            inst_book = InstituteBooks.query.filter_by(book_id=form.get('id'), admin=current_user.admin).one_or_none()
+            if inst_book:
+                return render_template('librarian/remove_book.html', inst_book=inst_book, copies=form.get('copies'))
+            else:
+                flash('Book record not found', 'danger')
+        elif form.get('remove') == '':
+            #delete record
+            inst_book = InstituteBooks.query.filter_by(book_id=form.get('id1'), admin=current_user.admin).one_or_none()
+            if inst_book:
+            #it exists in the institute
+                copies = int(form.get('copies1'))
+                if copies > 0 and copies < inst_book.copies_available:
+                #delete specified no of copies
+                    inst_book.copies_available = inst_book.copies_available - copies
+                    db.session.add(inst_book)
+                    db.session.commit()
+                    flash(f"Specified no of copies deleted. Remaining copies are {inst_book.copies_available}", 'success')
+                elif copies == inst_book.copies_available:
+                #delete book record
+                    InstituteBooks.query.filter_by(book_id=inst_book.book_id, admin=current_user.admin).delete()
+                    db.session.commit()
+                    flash('Book record deleted', 'success')
+                else:
+                    flash('Invalid no of copies', 'danger')
+                return redirect(url_for('remove_book'))
+        elif form.get('cancel') == '':
+            #cancel
+            return redirect(url_for('remove_book'))
+    return render_template('librarian/remove_book.html', inst_book=None)
 
 @app.route('/librarian/view-book', endpoint='view_book')
 @login_required
 def view_book():
-    return render_template('home.html')
+    inst_books = InstituteBooks.query.filter_by(admin=current_user.admin).all()
+    return render_template('librarian/view_book.html', inst_books=inst_books)
 '''END OF LIBRARIAN PAGES'''
