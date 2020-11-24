@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% set active_page = "remove" %}
+{% block title %}
+<title>Librarian | Issue Book</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="section-content text-warning">
+    <form action="{{ url_for('issue_book') }}" method="POST">
+        <fieldset class="form-group">
+            <legend class="border-bottom border-light mb-4">Issue Book</legend>
+            <div class="form-group">
+                <label for="">Enter Book ID</label>
+                <input type="number" class="form-control" name="book_id" id="" >
+            </div>
+            <div class="form-group">
+                <label for="">Enter Student ID</label>
+                <input type="number" class="form-control" name="student_id" id="" >
+            </div>
+            <button type="submit" class="btn btn-warning">Submit</button>
+            {% if inst_book and student %}
+            <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
+            <p>Name: {{inst_book.book.name}}</p>
+            <p>Author(s): {{inst_book.book.get_authors()}}</p>
+            <p>Department: {{inst_book.book.dept.name.upper()}}</p>
+            <p>Edition: {{inst_book.book.edition}}</p>
+            <p>Copies Available: {{inst_book.copies_available}}</p>
+
+            <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
+            <p>Name: {{student.name}}</p>
+            <p>Department: {{student.dept.name.upper()}}</p>
+
+            <input type="hidden" name="bk_id" value="{{inst_book.book_id}}">
+            <input type="hidden" name="copies" value="{{inst_book.copies_available}}">
+            <input type="hidden" name="st_id" value="{{student.id}}">
+            <button type="submit" name='issue' class="btn btn-warning mr-2">Issue?</button>
+            <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
+            {% endif %} 
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

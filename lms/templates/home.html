@@ -22,9 +22,9 @@
               {% endif %}
           </h2>
           {% if session['user_type'] == 'librarian' %}
-                <div class="mt-4"><button type="button" class="btn btn-lg btn-light mr-4">Book Issue</button>
-                
-                <button type="button" class="btn btn-lg btn-secondary">Book Return</button></div>
+            <div class="mt-4">
+                <a href="{{url_for('issue_book')}}" class="btn btn-light btn-lg mr-4" role="button">Book Issue</a>
+                <a href="{{url_for('return_book')}}" class="btn btn-lg btn-secondary" role="button">Book Return</a>
           {% endif %}
-      </div>
+            </div>
         {% endblock %}

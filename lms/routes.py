@@ -200,25 +200,28 @@ def view_student():
 def add_book():
     form = AddBookForm()
     if form.validate_on_submit():
-        book = Book(name=form.name.data, edition=form.edition.data, price=form.price.data)
-        #add dept
-        dept = Department.query.filter_by(name=form.dept.data.lower()).one_or_none()
-        if not dept:
-            dept = Department(name=form.dept.data)
-            db.session.add(dept)
-            db.session.commit()
-        book.dept = dept
-        #add authors
-        authors_book = [author.strip() for author in form.authors.data.split(',')]
-        for author in authors_book:
-            authr = Author.query.filter_by(name=author).one_or_none()
-            if not authr:
-                authr = Author(name=author)
+        book = Book.query.filter_by(name=form.name.data, edition=form.edition.data, price=form.price.data).one_or_none()
+        if not book:
+            #book doesn't exist
+            #add dept
+            book = Book(name=form.name.data, edition=form.edition.data, price=form.price.data)
+            dept = Department.query.filter_by(name=form.dept.data.lower()).one_or_none()
+            if not dept:
+                dept = Department(name=form.dept.data)
+                db.session.add(dept)
+                db.session.commit()
+            book.dept = dept
+            #add authors
+            authors_book = [author.strip() for author in form.authors.data.split(',')]
+            for author in authors_book:
+                authr = Author.query.filter_by(name=author).one_or_none()
+                if not authr:
+                    authr = Author(name=author)
+                    db.session.add(authr)
                 book.authors.append(authr)
-                db.session.add(authr)
-        db.session.add(book)
-        db.session.commit()
-        #add copies available
+            db.session.add(book)
+            db.session.commit()
+            #add copies available
         inst_book = InstituteBooks(copies_available=form.copies_available.data)
         inst_book.admin = current_user.admin
         inst_book.book = book
@@ -270,4 +273,49 @@ def remove_book():
 def view_book():
     inst_books = InstituteBooks.query.filter_by(admin=current_user.admin).all()
     return render_template('librarian/view_book.html', inst_books=inst_books)
+
+@app.route('/librarian/issue-book', methods=['GET', 'POST'], endpoint='issue_book')
+@login_required
+def issue_book():
+    form = request.form
+    if form:
+        if form.get('book_id'):
+            #print details
+            book = InstituteBooks.query.filter_by(book_id=form.get('book_id'), admin=current_user.admin).one_or_none()
+            student = Student.query.filter_by(id=form.get('student_id')).one_or_none()
+            if book:
+                if not book.copies_available:
+                    flash("Book unavailable at the moment", 'danger')
+                    return redirect(url_for('issue_book'))
+            else:
+                flash("Book record doesn't exist", 'danger')
+                return redirect(url_for('issue_book'))
+            if not student:
+                flash("Student record doesn't exist", 'danger')
+                return redirect(url_for('issue_book'))
+            if IssuedBooks.query.filter_by(book_id=book.book_id, student_id=student.id).one_or_none():
+                flash("Book has already been issued to student", 'danger')
+                return redirect(url_for('issue_book'))
+            return render_template('librarian/issue_book.html', inst_book=book, student=student)
+        elif form.get('issue') == '':
+            #issue book
+            inst_bk = InstituteBooks.query.filter_by(book_id=form.get('bk_id'), admin=current_user.admin).first()
+            book_issue = IssuedBooks(book_id=form.get('bk_id'), student_id=form.get('st_id'))
+            inst_bk.copies_available = inst_bk.copies_available - 1
+            db.session.add(book_issue)
+            db.session.add(inst_bk)
+            db.session.commit()
+            flash("Book issued successfully", 'success')
+        elif form.get('cancel') == '':
+            #go back
+            return redirect(url_for('issue_book'))
+
+
+        
+    return render_template('librarian/issue_book.html', book=None, student=None)
+
+@app.route('/librarian/return-book', endpoint='return_book')
+@login_required
+def return_book():
+    return render_template('librarian/return_book.html')
 '''END OF LIBRARIAN PAGES'''

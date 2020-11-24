@@ -79,6 +79,7 @@ class IssuedBooks(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.id', onupdate="CASCADE", ondelete="CASCADE"), primary_key=True)
     issue_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
     return_date = db.Column(db.Date)
+    is_returned = db.Column(db.Boolean, nullable=False, default=True)
     fine_due = db.Column(db.Integer, nullable=False, default=0)
 
     book = db.relationship('Book', backref='students')
