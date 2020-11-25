@@ -47,17 +47,18 @@
         {% endif %}
         {% endif %}
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item {{ 'active' if active_page == 'home' }}">
+                <a class="nav-link text-center" href="{{ url_for('home') }}">Home</a>
+            </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item {{ 'active' if active_page == 'profile' }}">
-                <a class="nav-link text-center" href="{{ url_for('home') }}">{{ current_user.username}}</a>
+                <a class="nav-link text-center" href="{{ url_for('profile') }}">Profile</a>
             </li>
             <li class="nav-item {{ 'active' if active_page == 'logout'}}">
                 <a class="nav-link text-center" href="{{ url_for('logout') }}">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item {{ 'active' if active_page == 'home' }}">
-                <a class="nav-link text-center" href="{{ url_for('home') }}">Home</a>
-            </li>
+            
             <li class="nav-item {{ 'active' if active_page == 'login' }}">
                 <a class="nav-link text-center" href="{{ url_for('login') }}">Login</a>
             </li>

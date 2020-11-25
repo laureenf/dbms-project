@@ -6,7 +6,7 @@ from flask_wtf import FlaskForm
 from flask_login import login_user, current_user, logout_user, login_required
 
 from lms import app, db, bcrypt
-from lms.forms import RegistrationForm, LoginForm, AddLibrarianForm, AddStudentForm, AddBookForm
+from lms.forms import *
 from lms.models import *
 
 db.create_all()
@@ -75,31 +75,41 @@ def logout():
     return redirect(url_for('login'))
 
 
-''' PROFILE PAGE FOR ALL USERS '''
-# @app.route('/profile', methods=['GET', 'POST'], endpoint='profile')
-# @login_required
-# def profile():
-#     # form = ChangeFieldForm()
-    # if form.validate_on_submit():
-    #     if bcrypt.check_password_hash(current_user.password, form.password.data):
-    #         return redirect(url_for('logout'))
-            # flash('Changes saved! Please login with your new credentials')
-            # return redirect(url_for('logout'))
-    # return render_template('profile.html', title='My Profile', form=form)
-    
-@app.route('/profile/chng_uname', methods=['GET', 'POST'], endpoint='chng_uname')
+''' PROFILE PAGE FOR ADMIN AND LIBRARIAN '''
+@app.route('/profile', methods=['GET', 'POST'], endpoint='profile')
 @login_required
-def chng_uname():
-    form = request.form
-    if form.cur_password.validate() and form.new_username.validate():
-        if bcrypt.check_password_hash(current_user.password, form.password.data):
+def profile():
+    return render_template('profile.html', title='My Profile')
+    
+@app.route('/profile/change-username', methods=['GET', 'POST'], endpoint='change_username')
+@login_required
+def change_username():
+    form = ChangeUsernameForm()
+    if form.validate_on_submit():
+        if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
             flash('Changes saved! Please login with your new credentials')
-            return redirect(url_for('logout'))
-        else:
-            form.cur_password.errors.append('Invalid password')
-    return render_template('chng_uname.html', form=form)
+    return render_template('profile/change_username.html', form=form, title='Change Username')
 
+@app.route('/profile/change-email', methods=['GET', 'POST'], endpoint='change_email')
+@login_required
+def change_email():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
+            # update it
+            flash('Changes saved! Please login with your new credentials')
+    return render_template('profile/change_email.html', form=form, title='Change Email')
+
+@app.route('/profile/change-password', methods=['GET', 'POST'], endpoint='change_password')
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
+            # update it
+            flash('Changes saved! Please login with your new credentials')
+    return render_template('profile/change_password.html', form=form, title='Change Password')
 
 ''' ADMIN PAGES '''
 
@@ -223,12 +233,16 @@ def add_book():
             db.session.add(book)
             db.session.commit()
             #add copies available
-        inst_book = InstituteBooks(copies_available=form.copies_available.data)
-        inst_book.admin = current_user.admin
-        inst_book.book = book
+        inst_book = InstituteBooks.query.filter_by(book=book, admin=current_user.admin).one_or_none()
+        if inst_book:
+            inst_book.copies_available = inst_book.copies_available + form.copies_available.data
+        else:
+            inst_book = InstituteBooks(copies_available=form.copies_available.data)
+            inst_book.admin = current_user.admin
+            inst_book.book = book
         db.session.add(inst_book)
         db.session.commit()
-        flash('Book record created', 'success')
+        flash('Book record created/updated', 'success')
         return redirect(url_for('add_book'))
     return render_template('librarian/add_book.html', form=form, title='Add Book')
 
@@ -344,4 +358,5 @@ def return_book():
             #cancel
             return redirect(url_for('return_book'))
     return render_template('librarian/return_book.html', title='Return Book', issued_book=None)
+
 '''END OF LIBRARIAN PAGES'''
