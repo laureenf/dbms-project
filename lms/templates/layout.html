@@ -23,7 +23,7 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
-        {% if session['user_type'] == 'librarian' and active_page != 'home' %}
+        {% if current_user.is_authenticated and session['user_type'] == 'librarian' and active_page != 'home' %}
         <div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
           <a role="button" class="btn btn-light {{ 'active' if active_page == 'issue' }}" href="{{url_for('issue_book')}}">Book Issue</a>
           <a role="button" class="btn btn-light {{ 'active' if active_page == 'return' }}" href="{{url_for('return_book')}}">Book Return</a>

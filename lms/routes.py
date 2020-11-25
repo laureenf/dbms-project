@@ -309,10 +309,10 @@ def issue_book():
         elif form.get('cancel') == '':
             #go back
             return redirect(url_for('issue_book'))
-    return render_template('librarian/issue_book.html', book=None, student=None)
+    return render_template('librarian/issue_book.html', book=None, student=None, title='Issue Book')
 
 @app.route('/librarian/return-book', endpoint='return_book')
 @login_required
 def return_book():
-    return render_template('librarian/return_book.html')
+    return render_template('librarian/issue_book.html', title='Return Book')
 '''END OF LIBRARIAN PAGES'''

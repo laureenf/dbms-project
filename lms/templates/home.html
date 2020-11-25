@@ -21,7 +21,7 @@
               Register today to get started, or Login if you already have an account!
               {% endif %}
           </h2>
-          {% if session['user_type'] == 'librarian' %}
+          {% if current_user.is_authenticated and session['user_type'] == 'librarian' %}
             <div class="mt-4">
                 <a href="{{url_for('issue_book')}}" class="btn btn-light btn-lg mr-4" role="button">Book Issue</a>
                 <a href="{{url_for('return_book')}}" class="btn btn-lg btn-secondary" role="button">Book Return</a>

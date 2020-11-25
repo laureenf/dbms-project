@@ -4,6 +4,7 @@
     </button>
     <a href="{{ url_for('home') }}" class="navbar-brand"><h1>LMS</h1></a>
     <div class="collapse navbar-collapse" id="Navbar">
+        {% if current_user.is_authenticated %}
         {% if session['user_type'] == 'admin' %}
         <ul class="navbar-nav">
             <li class="nav-item {{ 'active' if active_page == 'add_librarian' }}">
@@ -44,10 +45,9 @@
             </li>
         </ul>
         {% endif %}
+        {% endif %}
         <ul class="navbar-nav ml-auto">
-            
             {% if current_user.is_authenticated %}
-            
             <li class="nav-item {{ 'active' if active_page == 'profile' }}">
                 <a class="nav-link text-center" href="{{ url_for('home') }}">{{ current_user.username}}</a>
             </li>
