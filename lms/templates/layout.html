@@ -23,7 +23,12 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
-
+        {% if session['user_type'] == 'librarian' and active_page != 'home' %}
+        <div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
+          <a role="button" class="btn btn-light {{ 'active' if active_page == 'issue' }}" href="{{url_for('issue_book')}}">Book Issue</a>
+          <a role="button" class="btn btn-light {{ 'active' if active_page == 'return' }}" href="{{url_for('return_book')}}">Book Return</a>
+        </div>
+        {% endif %}
         {% block content %}
         
         {% endblock %}
@@ -32,11 +37,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script>
-      function go_to(url) {
-        var base_url = window.location.origin;
-        window.location.replace(base_url + url)
-      }
-    </script>
 </body>
 </html>
