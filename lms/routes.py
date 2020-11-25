@@ -1,5 +1,6 @@
 from functools import wraps
 from sqlalchemy import text
+from datetime import date
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
 from flask_login import login_user, current_user, logout_user, login_required
@@ -306,13 +307,41 @@ def issue_book():
             db.session.add(inst_bk)
             db.session.commit()
             flash("Book issued successfully", 'success')
+            return redirect(url_for('issue_book'))
         elif form.get('cancel') == '':
             #go back
             return redirect(url_for('issue_book'))
     return render_template('librarian/issue_book.html', book=None, student=None, title='Issue Book')
 
-@app.route('/librarian/return-book', endpoint='return_book')
+@app.route('/librarian/return-book', methods=['GET', 'POST'], endpoint='return_book')
 @login_required
 def return_book():
-    return render_template('librarian/issue_book.html', title='Return Book')
+    duration = 5 
+    form = request.form
+    if form:
+        if form.get('book_id'):
+            issued_book = IssuedBooks.query.filter_by(book_id=form.get('book_id'), student_id=form.get('student_id'), is_returned=False).one_or_none()
+            if not issued_book:
+                flash("Record doesn't exist", 'danger')
+                return redirect(url_for('return_book'))
+            else:
+                #print details
+                issued_book.return_date = date.today()
+                interval = (issued_book.return_date - issued_book.issue_date).days
+                if interval > duration:
+                    #calculate fine
+                    issued_book.fine_due = interval * 5
+                return render_template('librarian/return_book.html', title='Return Book', issued_book=issued_book)
+        elif form.get('return') == '':
+            #return book
+            issued_book = IssuedBooks.query.filter_by(book_id=form.get('bk_id'), student_id=form.get('st_id'), is_returned=False).one_or_none()
+            issued_book.return_date = date.today()
+            issued_book.is_returned = True
+            db.session.add(issued_book)
+            db.session.commit()
+            return redirect(url_for('return_book'))
+        elif form.get('cancel') == '':
+            #cancel
+            return redirect(url_for('return_book'))
+    return render_template('librarian/return_book.html', title='Return Book', issued_book=None)
 '''END OF LIBRARIAN PAGES'''

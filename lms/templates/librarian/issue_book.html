@@ -19,6 +19,7 @@
                 <input type="number" class="form-control" name="student_id" id="" >
             </div>
             <button type="submit" class="btn btn-warning">Submit</button>
+           
             {% if inst_book and student %}
             <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
             <p>Name: {{inst_book.book.name}}</p>
@@ -34,15 +35,11 @@
             <input type="hidden" name="bk_id" value="{{inst_book.book_id}}">
             <input type="hidden" name="copies" value="{{inst_book.copies_available}}">
             <input type="hidden" name="st_id" value="{{student.id}}">
-            <button type="submit" name='save' class="btn btn-warning mr-2">
-                {% if title == 'Issue Book' %}
-                Issue?
-                {% else %}
-                Return?
-                {% endif %}
-            </button>
+            
+            <button type="submit" name='issue' class="btn btn-warning mr-2">Issue?</button>
             <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
             {% endif %} 
+            
         </fieldset>
     </form>
 </div>
