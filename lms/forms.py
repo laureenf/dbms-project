@@ -109,9 +109,13 @@ class ChangePasswordForm(FlaskForm):
     new_password = PasswordField('Enter your new password', validators=[
         DataRequired()])
     confirm_password = PasswordField('Confirm password', validators=[
-        DataRequired(), EqualTo('password', message='Passwords do not match')
+        DataRequired(), EqualTo('new_password', message='Passwords do not match')
     ])
     save_changes = SubmitField('Save Changes')
+
+    def validate_new_password(self, new_password):
+        if new_password.data == self.cur_password.data:
+            raise ValidationError('New password cannot be the same as old password')
 
 class ChangeUsernameForm(FlaskForm):
     cur_password = PasswordField('Enter your current password', validators=[

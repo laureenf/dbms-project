@@ -88,7 +88,13 @@ def change_username():
     if form.validate_on_submit():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
-            flash('Changes saved! Please login with your new credentials')
+            current_user.username = form.new_username.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash(f'Changes saved!', 'success')
+            return redirect(url_for('profile'))
+        else:
+            flash('Invalid password', 'danger')
     return render_template('profile/change_username.html', form=form, title='Change Username')
 
 @app.route('/profile/change-email', methods=['GET', 'POST'], endpoint='change_email')
@@ -98,7 +104,13 @@ def change_email():
     if form.validate_on_submit():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
-            flash('Changes saved! Please login with your new credentials')
+            current_user.email = form.new_email.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Changes saved! Please login with your new credentials', 'success')
+            return redirect(url_for('logout'))
+        else:
+            flash('Invalid password', 'danger')
     return render_template('profile/change_email.html', form=form, title='Change Email')
 
 @app.route('/profile/change-password', methods=['GET', 'POST'], endpoint='change_password')
@@ -108,8 +120,16 @@ def change_password():
     if form.validate_on_submit():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
-            flash('Changes saved! Please login with your new credentials')
+            current_user.password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Changes saved! Please login with your new credentials', 'success')
+            return redirect(url_for('logout'))
+        else:
+            flash('Invalid password', 'danger')
     return render_template('profile/change_password.html', form=form, title='Change Password')
+
+'''END OF PROFILE PAGES'''
 
 ''' ADMIN PAGES '''
 
