@@ -8,9 +8,9 @@
         <h2 class="border-bottom pb-2 mb-4">{{ title }} - {{ current_user.name }}</h2>
         <p><span class='field-title'>Institute: </span>
         {% if session.get('user_type') == 'admin' %}
-        {{ current_user.institute.upper() }}
+            {{ current_user.institute.upper() }}
         {% else %}
-        {{ current_user.admin.institute.upper() }}</p>
+            {{ current_user.admin.institute.upper() }}</p>
         {% endif %}
         <p><span class="field-title">Role: </span>{{ session.get('user_type').capitalize() }} </p>
         <p><span class="field-title">Username: </span> {{ current_user.username }}</p>
@@ -20,12 +20,5 @@
         <p><span class='field-title'>Address: </span>{{ current_user.address }}</p>
         <p><span class='field-title'>Contact no: </span>{{ current_user.contact_no }}</p>
         {% endif %}
-        
-        <div class="btn-group mb-2" role="group" aria-label="Edit Profile">
-            <a role="button" class="btn btn-secondary {{ 'active' if active_page == 'change_username' }}" href="{{url_for('change_username')}}">Change Username</a>
-            <a role="button" class="btn btn-secondary {{ 'active' if active_page == 'change_email' }}" href="{{url_for('change_email')}}">Change Email</a>
-            <a role="button" class="btn btn-secondary {{ 'active' if active_page == 'change_password' }}" href="{{url_for('change_password')}}">Change Password</a>
-        </div>
     </div>
-    
 {% endblock %}

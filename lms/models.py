@@ -119,4 +119,3 @@ class Author(db.Model):
 
     def __repr__(self):
         return f"Author({self.id}, '{self.name}')"
-    

@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% set active_page = "" %}
+{% block title %}
+<title>404 Page Not Found</title>
+{% endblock %}
+{% block content %}
+    <div class="section-content text-warning">
+        <h3 class="border-bottom pb-2 mb-4">Error 404: Page not found</h3>
+        <pre class="text-warning">
+We cannot find the page you are looking for.
+
+It might have been removed, had its name changed, or is temporarily unavailable.
+            
+Please check that the Website address is spelled correctly.
+            
+Or go to our home page, and use the menus to navigate to a specific section.
+
+Happy surfing! :)
+        </pre>
+    </div>
+{% endblock %}

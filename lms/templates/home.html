@@ -4,27 +4,27 @@
 <title>LMS | Home</title>
 {% endblock %}
 {% block content %}
-        <div class="container main-content text-warning home">
-          <h1 class="font-sizing-h1 border-bottom pb-4 mb-4">
-              Welcome to LMS, 
-              {% if current_user.is_authenticated %}
-              {{ current_user.username }}
-              {% else %}
-              an integrated solution to your Library Management issues
-              {% endif %}
-          </h1>
-          <h2 class="font-sizing-h2">
-              {% if current_user.is_authenticated %}
-              Please select any option to continue :)
-              
-              {% else %}
-              Register today to get started, or Login if you already have an account!
-              {% endif %}
-          </h2>
-          {% if current_user.is_authenticated and session['user_type'] == 'librarian' %}
-            <div class="mt-4">
-                <a href="{{url_for('issue_book')}}" class="btn btn-light btn-lg mr-4" role="button">Book Issue</a>
-                <a href="{{url_for('return_book')}}" class="btn btn-lg btn-secondary" role="button">Book Return</a>
-          {% endif %}
-            </div>
-        {% endblock %}
+  <div class="container main-content text-warning home">
+    <h1 class="font-sizing-h1 border-bottom pb-4 mb-4">
+      Welcome to LMS, 
+      {% if current_user.is_authenticated %}
+        {{ current_user.username }}
+      {% else %}
+        an integrated solution to your Library Management issues
+      {% endif %}
+    </h1>
+    <h2 class="font-sizing-h2">
+      {% if current_user.is_authenticated %}
+        Please select any option to continue :)
+      {% else %}
+        Register today to get started, or Login if you already have an account!
+      {% endif %}
+    </h2>
+    {% if current_user.is_authenticated and session['user_type'] == 'librarian' %}
+      <div class="mt-4">
+        <a href="{{url_for('issue_book')}}" class="btn btn-light btn-lg mr-4" role="button">Book Issue</a>
+        <a href="{{url_for('return_book')}}" class="btn btn-lg btn-secondary" role="button">Book Return</a>
+      </div>
+    {% endif %}
+  </div>          
+{% endblock %}

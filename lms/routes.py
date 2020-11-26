@@ -12,10 +12,10 @@ from lms.models import *
 db.create_all()
 db.session.execute(text('PRAGMA foreign_keys = ON'))
 
-''' OPTIONAL
+#page not found
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('page_not_found.html'), 404 '''
+    return render_template('page_not_found.html'), 404 
 
 
 ''' LANDING PAGE '''
