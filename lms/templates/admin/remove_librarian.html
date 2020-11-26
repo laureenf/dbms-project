@@ -5,30 +5,28 @@
 {% endblock %}
 {% block content %}
 <div class="section-content">
-    <form action="{{ url_for('remove_librarian') }}" method="POST" class="text-warning">
+    <form action="" method="POST" class="text-warning">
         <fieldset class="form-group">
             <legend class="border-bottom border-light mb-4">Remove Librarian</legend>
             <div class="form-group">
-                <label for="">Enter Librarian's id</label>
+                <label for="">Enter Librarian's ID</label>
                 <input type="number" class="form-control" name="id" id="">
             </div>
             <button type="submit" class="btn btn-warning">Submit</button>
-        
-    {% if librarian != None %}
-    <h3 class="border-bottom border-light mb-4 mt-4">Librarian Details</h3>
-    <p>Name: {{ librarian.name }}</p>
-    <p>Username: {{ librarian.username }}</p>
-    <p>Email: {{ librarian.email }}</p>
-    <p>Address: {{ librarian.address }}</p>
-    <p>Contact no: {{ librarian.contact_no }}</p>
-    <p>Join Date: {{ librarian.join_date }}</p>
-    <input type="hidden" name="id1" value="{{librarian.id}}">
-    <button type="submit" name='remove' onclick="{{ url_for('remove_librarian') }}" class="btn btn-warning mr-2">Remove?</button>
-    <button type="submit" name='cancel' onclick="{{ url_for('remove_librarian') }}" class="btn btn-secondary">Cancel</button>
-    {% endif %}
-</fieldset>
-</form>
-    
-</div>
+            {% if librarian != None %}
+                <h3 class="border-bottom border-light mb-4 mt-4">Librarian Details</h3>
+                <p>Name: {{ librarian.name }}</p>
+                <p>Username: {{ librarian.username }}</p>
+                <p>Email: {{ librarian.email }}</p>
+                <p>Address: {{ librarian.address }}</p>
+                <p>Contact no: {{ librarian.contact_no }}</p>
+                <p>Join Date: {{ librarian.join_date }}</p>
 
+                <input type="hidden" name="id1" value="{{librarian.id}}">
+                <button type="submit" name='remove' onclick="{{ url_for('remove_librarian') }}" class="btn btn-warning mr-2">Remove?</button>
+                <button type="submit" name='cancel' onclick="{{ url_for('remove_librarian') }}" class="btn btn-secondary">Cancel</button>
+            {% endif %}
+        </fieldset>
+    </form>    
+</div>
 {% endblock %}

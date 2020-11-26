@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% set active_page = "add" %}
 {% block title %}
-<title>Librarian | Add Book</title>
+<title>Librarian | {{ title }}</title>
 {% endblock %}
 
 {% block content %}
@@ -91,8 +91,7 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{form.submit(class="btn btn-warning")}}
-            
+            {{form.submit(class="btn btn-warning")}} 
         </div>
     </form>
 </div>

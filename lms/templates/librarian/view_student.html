@@ -10,7 +10,7 @@
     <table class="table table-hover table-bordered">
         <thead class="thead-dark"> 
             <tr>
-                <th scope="col">No</th>
+                <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Department</th>
                 <th scope="col">Year</th>
@@ -27,7 +27,7 @@
             {% for student in current_user.admin.students %}
                 <tr class="table-light">
                     <th scope="row">{{student.id}}</th>
-                    <td>{{student.name}}</td>
+                    <td><a href="{{ url_for('student_history_current', id=student.id) }}">{{student.name}}</a></td>
                     <td>{{student.dept.name.upper()}}</td>
                     <td>{{student.year}}</td>
                     <td>{{student.address}}</td>

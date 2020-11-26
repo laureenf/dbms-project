@@ -28,6 +28,7 @@ html, body {
 td[colspan]:not([colspan="1"]) {
     text-align: center;
 }
+
 .font-sizing-h1 {
     font-size: 3.5vw;
 }

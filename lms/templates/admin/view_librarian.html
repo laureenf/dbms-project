@@ -1,45 +1,45 @@
 {% extends 'layout.html' %}
 {% set active_page = "view_librarian" %}
 {% block title %}
-<title>Admin | View Librarian</title>
+<title>Admin | View Librarian(s)</title>
 {% endblock %}
+
 {% block content %}
 <div class="section-content text-warning">
-    <legend class="border-bottom border-light mb-4">View Librarians</legend>
+    <legend class="border-bottom border-light mb-4">View Librarian(s)</legend>
     <div class="table-responsive">
-    <table class="table table-hover table-bordered">
-        <thead class="thead-dark"> 
-            <tr>
-                <th scope="col">No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Username</th>
-                <th scope="col">Join Date</th>
-                <th scope="col">Address</th>
-                <th scope="col">Contact No</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if current_user.librarians == [] %}
-                <tr class="table-light">
-                    <td colspan="7">-- NIL --</td>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark"> 
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Join Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Contact No</th>
                 </tr>
-            {% else %}
-            {% for librarian in current_user.librarians %}
-                <tr class="table-light">
-                    <th scope="row">{{librarian.id}}</th>
-                    <td>{{librarian.name}}</td>
-                    <td>{{librarian.email}}</td>
-                    <td>{{librarian.username}}</td>
-                    <td>{{librarian.join_date}}</td>
-                    <td>{{librarian.address}}</td>
-                    <td>{{librarian.contact_no}}</td>
-                </tr>
-            {% endfor %}
-            {% endif %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if current_user.librarians == [] %}
+                    <tr class="table-light">
+                        <td colspan="7">-- NIL --</td>
+                    </tr>
+                {% else %}
+                    {% for librarian in current_user.librarians %}
+                        <tr class="table-light">
+                            <th scope="row">{{ librarian.id }}</th>
+                            <td>{{ librarian.name }}</td>
+                            <td>{{ librarian.email }}</td>
+                            <td>{{ librarian.username }}</td>
+                            <td>{{ librarian.join_date }}</td>
+                            <td>{{ librarian.address }}</td>
+                            <td>{{ librarian.contact_no }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 </div>
-
 {% endblock %}

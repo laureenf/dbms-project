@@ -9,6 +9,7 @@
     <a role="button" class="btn btn-light {{ 'active' if active_page == 'issue' }}" href="{{url_for('issue_book')}}">Book Issue</a>
     <a role="button" class="btn btn-light {{ 'active' if active_page == 'return' }}" href="{{url_for('return_book')}}">Book Return</a>
 </div>
+
 <div class="section-content text-warning">
     <form action="" method="POST">
         <fieldset class="form-group">
@@ -24,25 +25,24 @@
             <button type="submit" class="btn btn-warning">Submit</button>
            
             {% if inst_book and student %}
-            <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
-            <p>Name: {{inst_book.book.name}}</p>
-            <p>Author(s): {{inst_book.book.get_authors()}}</p>
-            <p>Department: {{inst_book.book.dept.name.upper()}}</p>
-            <p>Edition: {{inst_book.book.edition}}</p>
-            <p>Copies Available: {{inst_book.copies_available}}</p>
+                <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
+                <p>Name: {{inst_book.book.name}}</p>
+                <p>Author(s): {{inst_book.book.get_authors()}}</p>
+                <p>Department: {{inst_book.book.dept.name.upper()}}</p>
+                <p>Edition: {{inst_book.book.edition}}</p>
+                <p>Copies Available: {{inst_book.copies_available}}</p>
 
-            <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
-            <p>Name: {{student.name}}</p>
-            <p>Department: {{student.dept.name.upper()}}</p>
+                <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
+                <p>Name: {{student.name}}</p>
+                <p>Department: {{student.dept.name.upper()}}</p>
 
-            <input type="hidden" name="bk_id" value="{{inst_book.book_id}}">
-            <input type="hidden" name="copies" value="{{inst_book.copies_available}}">
-            <input type="hidden" name="st_id" value="{{student.id}}">
-            
-            <button type="submit" name='issue' class="btn btn-warning mr-2">Issue?</button>
-            <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
-            {% endif %} 
-            
+                <input type="hidden" name="bk_id" value="{{inst_book.book_id}}">
+                <input type="hidden" name="copies" value="{{inst_book.copies_available}}">
+                <input type="hidden" name="st_id" value="{{student.id}}">
+    
+                <button type="submit" name='issue' class="btn btn-warning mr-2">Issue?</button>
+                <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
+            {% endif %}
         </fieldset>
     </form>
 </div>

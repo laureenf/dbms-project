@@ -1,5 +1,5 @@
 from functools import wraps
-from sqlalchemy import text
+from sqlalchemy import text, desc
 from datetime import date
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
@@ -172,6 +172,24 @@ def remove_librarian():
 @login_required
 def view_librarian():
     return render_template('admin/view_librarian.html', title='View Librarian')
+
+@app.route('/admin/delete-account', methods=['GET', 'POST'], endpoint='delete_account')
+@login_required
+def delete_account():
+    form = request.form
+    if form:
+        if form.get('password'):
+            if bcrypt.check_password_hash(current_user.password, form.get('password')):
+                return render_template('admin/delete_account.html', title='Delete Account', submit=True)
+            else:
+                flash('Invalid password', 'danger')
+                return redirect(url_for('delete_account'))
+        elif form.get('delete') == '':
+            Admin.query.filter_by(id=current_user.id).delete()
+            db.session.commit()
+        elif form.get('cancel') == '':
+            return redirect(url_for('delete_account'))
+    return render_template('admin/delete_account.html', title='Delete Account', submit=False)
 
 '''END OF ADMIN PAGES'''
 
@@ -379,4 +397,15 @@ def return_book():
             return redirect(url_for('return_book'))
     return render_template('librarian/return_book.html', title='Return Book', issued_book=None)
 
+@app.route('/librarian/student-history/<int:id>/current', endpoint='student_history_current')
+@login_required
+def student_history_current(id):
+    student_history_current = IssuedBooks.query.filter_by(student_id=id, is_returned=False).all()
+    return render_template('librarian/student_history.html', student_history=student_history_current, is_current=True, student_id=id)
+
+@app.route('/librarian/student-history/<int:id>/past', endpoint='student_history_past')
+@login_required
+def student_history_past(id):
+    student_history_past = IssuedBooks.query.filter_by(student_id=id, is_returned=True).order_by(desc(IssuedBooks.return_date)).all()
+    return render_template('librarian/student_history.html', student_history=student_history_past, is_current=False, student_id=id)
 '''END OF LIBRARIAN PAGES'''

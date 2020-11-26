@@ -20,7 +20,6 @@
             <button type="submit" class="btn btn-warning">Submit</button>
             {% if inst_book != None %}
             <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
-            
             <p>Name: {{ inst_book.book.name }}</p>
             <p>Author(s): {{inst_book.book.get_authors()}}</p>
             <p>Department: {{ inst_book.book.dept.name.upper() }}</p>
@@ -28,6 +27,7 @@
             <p>Price: {{ inst_book.book.price }}</p>
             <p>Available Copies: {{inst_book.copies_available}}</p>
             <p>Copies to be Deleted: {{copies}}</p>
+            
             <input type="hidden" name="id1" value="{{inst_book.book_id}}">
             <input type="hidden" name="copies1" value="{{copies}}">
             <button type="submit" name='remove' onclick="{{ url_for('remove_librarian') }}" class="btn btn-warning mr-2">Remove?</button>

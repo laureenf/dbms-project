@@ -24,28 +24,27 @@
             <button type="submit" class="btn btn-warning">Submit</button>
            
             {% if issued_book %}
-            <h3 class="border-bottom border-light mb-4 mt-4">Transaction Details</h3>
-            <p>Fine due: {{issued_book.fine_due}}</p>
-            <p>Issue Date: {{issued_book.issue_date}}</p>
-            <p>Return Date: {{issued_book.return_date}}</p>
+                <h3 class="border-bottom border-light mb-4 mt-4">Transaction Details</h3>
+                <p>Fine due: {{issued_book.fine_due}}</p>
+                <p>Issue Date: {{issued_book.issue_date}}</p>
+                <p>Return Date: {{issued_book.return_date}}</p>
 
-            <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
-            <p>Name: {{issued_book.book.name}}</p>
-            <p>Author(s): {{issued_book.book.get_authors()}}</p>
-            <p>Department: {{issued_book.book.dept.name.upper()}}</p>
-            <p>Edition: {{issued_book.book.edition}}</p>
+                <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
+                <p>Name: {{issued_book.book.name}}</p>
+                <p>Author(s): {{issued_book.book.get_authors()}}</p>
+                <p>Department: {{issued_book.book.dept.name.upper()}}</p>
+                <p>Edition: {{issued_book.book.edition}}</p>
 
-            <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
-            <p>Name: {{issued_book.student.name}}</p>
-            <p>Department: {{issued_book.student.dept.name.upper()}}</p>
+                <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
+                <p>Name: {{issued_book.student.name}}</p>
+                <p>Department: {{issued_book.student.dept.name.upper()}}</p>
 
-            <input type="hidden" name="bk_id" value="{{issued_book.book.id}}">
-            <input type="hidden" name="st_id" value="{{issued_book.student.id}}">
+                <input type="hidden" name="bk_id" value="{{issued_book.book.id}}">
+                <input type="hidden" name="st_id" value="{{issued_book.student.id}}">
             
-            <button type="submit" name='return' class="btn btn-warning mr-2">Return?</button>
-            <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
+                <button type="submit" name='return' class="btn btn-warning mr-2">Return?</button>
+                <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
             {% endif %} 
-            
         </fieldset>
     </form>
 </div>

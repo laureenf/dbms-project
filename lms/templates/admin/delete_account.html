@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% set active_page = "profile" %}
+{% block title %}
+<title>Admin | Delete Account</title>
+{% endblock %}
+
+{% block content %}
+<div class="section-content text-warning">
+    <form action="" method="POST">
+        <fieldset class="form-group">
+            <legend class="border-bottom border-light mb-4">Delete Account</legend>
+            <div class="form-group">
+                <label for="">Re-enter current password</label>
+                <input type="password" class="form-control" name="password" id="">
+            </div>
+            <button type="submit" class="btn btn-warning mb-2">Submit</button>
+            {% if submit %}
+                <p>Please note: once deleted, all your data will be permanently deleted and account cannot be recovered. </p>
+                <button type="submit" name='delete' onclick="{{ url_for('delete_account') }}" class="btn btn-warning mr-2">Remove?</button>
+                <button type="submit" name='cancel' onclick="{{ url_for('delete_account') }}" class="btn btn-secondary">Cancel</button>
+            {% endif %}
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
