@@ -89,7 +89,6 @@ def change_username():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
             current_user.username = form.new_username.data
-            db.session.add(current_user)
             db.session.commit()
             flash(f'Changes saved!', 'success')
             return redirect(url_for('profile'))
@@ -105,7 +104,6 @@ def change_email():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
             current_user.email = form.new_email.data
-            db.session.add(current_user)
             db.session.commit()
             flash('Changes saved! Please login with your new credentials', 'success')
             return redirect(url_for('logout'))
@@ -121,7 +119,6 @@ def change_password():
         if bcrypt.check_password_hash(current_user.password, form.cur_password.data):
             # update it
             current_user.password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
-            db.session.add(current_user)
             db.session.commit()
             flash('Changes saved! Please login with your new credentials', 'success')
             return redirect(url_for('logout'))
@@ -180,16 +177,17 @@ def delete_account():
     if form:
         if form.get('password'):
             if bcrypt.check_password_hash(current_user.password, form.get('password')):
-                return render_template('admin/delete_account.html', title='Delete Account', submit=True)
+                return render_template('profile/delete_account.html', title='Delete Account', submit=True)
             else:
                 flash('Invalid password', 'danger')
                 return redirect(url_for('delete_account'))
         elif form.get('delete') == '':
             Admin.query.filter_by(id=current_user.id).delete()
             db.session.commit()
+            return redirect(url_for('logout'))
         elif form.get('cancel') == '':
             return redirect(url_for('delete_account'))
-    return render_template('admin/delete_account.html', title='Delete Account', submit=False)
+    return render_template('profile/delete_account.html', title='Delete Account', submit=False)
 
 '''END OF ADMIN PAGES'''
 

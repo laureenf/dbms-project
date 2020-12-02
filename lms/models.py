@@ -5,9 +5,9 @@ from flask_login import UserMixin, current_user
 
 @login_manager.user_loader
 def load_user(user_id):
-    if session['user_type'] == 'admin':
+    if session.get('user_type') == 'admin':
         return Admin.query.get(int(user_id))
-    elif session['user_type'] == 'librarian':
+    elif session.get('user_type') == 'librarian':
         return Librarian.query.get(int(user_id))
     else:
         return None

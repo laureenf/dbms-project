@@ -2,7 +2,6 @@ html, body {
     background-image: url('../images/books1.jpg');
     background-size: cover;
     background-attachment: fixed;
-    /* height: 100%; */
 }
 
 /* main container */
@@ -17,6 +16,13 @@ html, body {
     text-align: center;
     padding: 20px;
 }
+/* font sizing for home page */
+.font-sizing-h1 {
+    font-size: 3.5vw;
+}
+.font-sizing-h2 {
+    font-size: 3vw;
+}
 
 /* bg and padding for all sections */
 .section-content {
@@ -27,26 +33,4 @@ html, body {
 /* center nil when table for view is empty */
 td[colspan]:not([colspan="1"]) {
     text-align: center;
-}
-
-.font-sizing-h1 {
-    font-size: 3.5vw;
-}
-.font-sizing-h2 {
-    font-size: 3vw;
-}
-
-.profile-link {
-    color: rgb(179, 175, 170);
-}
-
-.profile-link:hover {
-    color: grey;
-    text-decoration: none;
-}
-
-.hidden-layout {
-    background-color: white;
-    color: black;
-    padding: 10px;
 }
