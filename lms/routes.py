@@ -12,7 +12,7 @@ from lms.models import *
 db.create_all()
 db.session.execute(text('PRAGMA foreign_keys = ON'))
 
-#page not found
+'''PAGE NOT FOUND'''
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404 
@@ -231,7 +231,7 @@ def remove_student():
         else:
             student = Student.query.filter_by(id=form.get('id')).first()
             if student:
-                return render_template('librarian/remove_student.html', title='Remove student', student=student)
+                return render_template('librarian/remove_student.html', title='Remove Student', student=student)
             else:
                 flash('Student record does not exist', 'danger')
     return render_template('librarian/remove_student.html', title='Remove Student', student=None)
@@ -323,7 +323,7 @@ def remove_book():
 @login_required
 def view_book():
     inst_books = InstituteBooks.query.filter_by(admin=current_user.admin).all()
-    return render_template('librarian/view_book.html', inst_books=inst_books)
+    return render_template('librarian/view_book.html', inst_books=inst_books, available=True)
 
 @app.route('/librarian/issue-book', methods=['GET', 'POST'], endpoint='issue_book')
 @login_required
@@ -344,7 +344,7 @@ def issue_book():
             if not student:
                 flash("Student record doesn't exist", 'danger')
                 return redirect(url_for('issue_book'))
-            if IssuedBooks.query.filter_by(book_id=book.book_id, student_id=student.id).one_or_none():
+            if IssuedBooks.query.filter_by(book_id=book.book_id, student_id=student.id, is_returned=False).one_or_none():
                 flash("Book has already been issued to student", 'danger')
                 return redirect(url_for('issue_book'))
             return render_template('librarian/issue_book.html', inst_book=book, student=student)
@@ -386,6 +386,10 @@ def return_book():
             #return book
             issued_book = IssuedBooks.query.filter_by(book_id=form.get('bk_id'), student_id=form.get('st_id'), is_returned=False).one_or_none()
             issued_book.return_date = date.today()
+            interval = (issued_book.return_date - issued_book.issue_date).days
+            if interval > duration:
+                    #calculate fine
+                    issued_book.fine_due = interval * 5
             issued_book.is_returned = True
             db.session.add(issued_book)
             db.session.commit()

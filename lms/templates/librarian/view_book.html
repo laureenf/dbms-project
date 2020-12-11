@@ -4,6 +4,10 @@
 <title>Librarian | View Book</title>
 {% endblock %}
 {% block content %}
+<div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
+    <a role="button" class="btn btn-light {{ 'active' if available }}" href="{{url_for('view_book')}}">Available</a>
+    <a role="button" class="btn btn-light {{ 'active' if not available }}" href="{{url_for('view_book')}}">Issued</a>
+</div>
 <div class="section-content text-warning">
     <legend class="border-bottom border-light mb-4">View Books</legend>
     <div class="table-responsive">

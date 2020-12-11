@@ -21,9 +21,11 @@
                 <label for="">Enter Student ID</label>
                 <input type="number" class="form-control" name="student_id" id="" >
             </div>
+            {% if not issued_book %}
             <button type="submit" class="btn btn-warning">Submit</button>
-           
-            {% if issued_book %}
+            {% else %}
+            <button type="submit" class="btn btn-warning disabled">Submit</button>
+
                 <h3 class="border-bottom border-light mb-4 mt-4">Transaction Details</h3>
                 <p>Fine due: {{issued_book.fine_due}}</p>
                 <p>Issue Date: {{issued_book.issue_date}}</p>

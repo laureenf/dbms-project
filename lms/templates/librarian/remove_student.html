@@ -11,10 +11,12 @@
             <legend class="border-bottom border-light mb-4">Remove Student</legend>
             <div class="form-group">
                 <label for="">Enter Student's ID</label>
-                <input type="number" class="form-control" name="id" id="" required>
+                <input type="number" class="form-control" name="id" id="">
             </div>
+            {% if student == None %}
             <button type="submit" class="btn btn-warning">Submit</button>
-            {% if student != None %}
+            {% else %}
+            <button type="submit" class="btn btn-warning disabled">Submit</button>
                 <h3 class="border-bottom border-light mb-4 mt-4">Student Details</h3>
                 <p>Name: {{ student.name }}</p>
                 <p>Year: {{ student.year }}</p>

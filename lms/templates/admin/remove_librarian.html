@@ -12,8 +12,10 @@
                 <label for="">Enter Librarian's ID</label>
                 <input type="number" class="form-control" name="id" id="">
             </div>
+            {% if not librarian %}
             <button type="submit" class="btn btn-warning">Submit</button>
-            {% if librarian != None %}
+            {% else %}
+            <button type="submit" class="btn btn-warning disabled">Submit</button>
                 <h3 class="border-bottom border-light mb-4 mt-4">Librarian Details</h3>
                 <p>Name: {{ librarian.name }}</p>
                 <p>Username: {{ librarian.username }}</p>

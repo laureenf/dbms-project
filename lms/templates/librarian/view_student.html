@@ -27,7 +27,7 @@
             {% for student in current_user.admin.students %}
                 <tr class="table-light">
                     <th scope="row">{{student.id}}</th>
-                    <td><a href="{{ url_for('student_history_current', id=student.id) }}">{{student.name}}</a></td>
+                    <td><a href="{{ url_for('student_history_current', id=student.id) }}" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="View Book History">{{student.name}}</a></td>
                     <td>{{student.dept.name.upper()}}</td>
                     <td>{{student.year}}</td>
                     <td>{{student.address}}</td>

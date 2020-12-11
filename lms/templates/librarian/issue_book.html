@@ -22,9 +22,9 @@
                 <label for="">Enter Student ID</label>
                 <input type="number" class="form-control" name="student_id" id="" >
             </div>
-            <button type="submit" class="btn btn-warning">Submit</button>
            
             {% if inst_book and student %}
+            <button type="submit" class="btn btn-warning disabled">Submit</button>
                 <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
                 <p>Name: {{inst_book.book.name}}</p>
                 <p>Author(s): {{inst_book.book.get_authors()}}</p>
@@ -42,6 +42,8 @@
     
                 <button type="submit" name='issue' class="btn btn-warning mr-2">Issue?</button>
                 <button type="submit" name='cancel' class="btn btn-secondary">Cancel</button>
+            {% else %}
+            <button type="submit" class="btn btn-warning">Submit</button>
             {% endif %}
         </fieldset>
     </form>

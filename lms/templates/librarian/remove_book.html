@@ -17,8 +17,10 @@
                 <label for="">Enter no of copies to be deleted</label>
                 <input type="number" class="form-control" name="copies" id="" >
             </div>
+            {% if inst_book == None %}
             <button type="submit" class="btn btn-warning">Submit</button>
-            {% if inst_book != None %}
+            {% else %}
+            <button type="submit" class="btn btn-warning disabled">Submit</button>
             <h3 class="border-bottom border-light mb-4 mt-4">Book Details</h3>
             <p>Name: {{ inst_book.book.name }}</p>
             <p>Author(s): {{inst_book.book.get_authors()}}</p>
