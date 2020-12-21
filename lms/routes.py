@@ -319,7 +319,7 @@ def remove_book():
             return redirect(url_for('remove_book'))
     return render_template('librarian/remove_book.html', inst_book=None)
 
-@app.route('/librarian/view-book', endpoint='view_book')
+@app.route('/librarian/view-book', methods=['GET', 'POST'], endpoint='view_book')
 @login_required
 def view_book():
     inst_books = InstituteBooks.query.filter_by(admin=current_user.admin).all()

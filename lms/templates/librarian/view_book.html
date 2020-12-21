@@ -10,8 +10,9 @@
 </div>
 <div class="section-content text-warning">
     <legend class="border-bottom border-light mb-4">View Books</legend>
+    <input class="form-control mt-2 mb-2" type="search" id="search-box" onkeyup="filterByName()" placeholder="Search by Name...">
     <div class="table-responsive">
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered" id='table'>
         <thead class="thead-dark"> 
             <tr>
                 <th scope="col">ID</th>
@@ -46,5 +47,4 @@
     </table>
     </div>
 </div>
-
 {% endblock %}
