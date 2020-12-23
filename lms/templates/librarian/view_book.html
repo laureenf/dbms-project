@@ -4,10 +4,6 @@
 <title>Librarian | View Book</title>
 {% endblock %}
 {% block content %}
-<div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
-    <a role="button" class="btn btn-light {{ 'active' if available }}" href="{{url_for('view_book')}}">Available</a>
-    <a role="button" class="btn btn-light {{ 'active' if not available }}" href="{{url_for('view_book')}}">Issued</a>
-</div>
 <div class="section-content text-warning">
     <legend class="border-bottom border-light mb-4">View Books</legend>
     <input class="form-control mt-2 mb-2" type="search" id="search-box" onkeyup="filterByName()" placeholder="Search by Name...">
@@ -33,13 +29,12 @@
             {% for inst_book in inst_books %}
                 <tr class="table-light">
                     <th scope="row">{{inst_book.book.id}}</th>
-                    <td>{{inst_book.book.name}}</td>
+                    <td><a href="{{ url_for('book_history_current', id=inst_book.book.id) }}" class="text-decoration-none" data-toggle="tooltip" data-placement="top" title="View Student History">{{inst_book.book.name}}</a></td>
                     <td>{{inst_book.book.get_authors()}}</td>
                     <td>{{inst_book.book.dept.name.upper()}}</td>
                     <td>{{inst_book.book.edition}}</td>
                     <td>{{inst_book.book.price}}</td>
-                    <td>{{inst_book.copies_available}}</td>
-                    
+                    <td>{{inst_book.copies_available}}</td>     
                 </tr>
             {% endfor %}
             {% endif %}

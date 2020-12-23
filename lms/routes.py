@@ -241,6 +241,18 @@ def remove_student():
 def view_student():
     return render_template('librarian/view_student.html')
 
+@app.route('/librarian/student-history/<int:id>/current', endpoint='student_history_current')
+@login_required
+def student_history_current(id):
+    student_history_current = IssuedBooks.query.filter_by(student_id=id, is_returned=False).all()
+    return render_template('librarian/student_history.html', student_history=student_history_current, is_current=True, student_id=id)
+
+@app.route('/librarian/student-history/<int:id>/past', endpoint='student_history_past')
+@login_required
+def student_history_past(id):
+    student_history_past = IssuedBooks.query.filter_by(student_id=id, is_returned=True).order_by(desc(IssuedBooks.return_date)).all()
+    return render_template('librarian/student_history.html', student_history=student_history_past, is_current=False, student_id=id)
+
 #book functions
 @app.route('/librarian/add-book', methods=['GET', 'POST'], endpoint='add_book')
 @login_required
@@ -325,6 +337,18 @@ def view_book():
     inst_books = InstituteBooks.query.filter_by(admin=current_user.admin).all()
     return render_template('librarian/view_book.html', inst_books=inst_books, available=True)
 
+@app.route('/librarian/book-history/<int:id>/current', endpoint='book_history_current')
+@login_required
+def book_history_current(id):
+    book_history_current = IssuedBooks.query.filter_by(book_id=id, is_returned=False).all()
+    return render_template('librarian/book_history.html', book_history=book_history_current, is_current=True, book_id=id)
+
+@app.route('/librarian/book-history/<int:id>/past', endpoint='book_history_past')
+@login_required
+def book_history_past(id):
+    book_history_past = IssuedBooks.query.filter_by(book_id=id, is_returned=True).order_by(desc(IssuedBooks.return_date)).all()
+    return render_template('librarian/book_history.html', book_history=book_history_past, is_current=False, book_id=id) 
+
 @app.route('/librarian/issue-book', methods=['GET', 'POST'], endpoint='issue_book')
 @login_required
 def issue_book():
@@ -347,7 +371,7 @@ def issue_book():
             if IssuedBooks.query.filter_by(book_id=book.book_id, student_id=student.id, is_returned=False).one_or_none():
                 flash("Book has already been issued to student", 'danger')
                 return redirect(url_for('issue_book'))
-            return render_template('librarian/issue_book.html', inst_book=book, student=student)
+            return render_template('librarian/issue_book.html', inst_book=book, student=student, title='Issue Book')
         elif form.get('issue') == '':
             #issue book
             inst_bk = InstituteBooks.query.filter_by(book_id=form.get('bk_id'), admin=current_user.admin).first()
@@ -391,7 +415,10 @@ def return_book():
                     #calculate fine
                     issued_book.fine_due = interval * 5
             issued_book.is_returned = True
+            inst_book = InstituteBooks.query.filter_by(book=issued_book.book, admin=current_user.admin).one_or_none()
+            inst_book.copies_available = inst_book.copies_available + 1
             db.session.add(issued_book)
+            db.session.add(inst_book)
             db.session.commit()
             return redirect(url_for('return_book'))
         elif form.get('cancel') == '':
@@ -399,15 +426,6 @@ def return_book():
             return redirect(url_for('return_book'))
     return render_template('librarian/return_book.html', title='Return Book', issued_book=None)
 
-@app.route('/librarian/student-history/<int:id>/current', endpoint='student_history_current')
-@login_required
-def student_history_current(id):
-    student_history_current = IssuedBooks.query.filter_by(student_id=id, is_returned=False).all()
-    return render_template('librarian/student_history.html', student_history=student_history_current, is_current=True, student_id=id)
 
-@app.route('/librarian/student-history/<int:id>/past', endpoint='student_history_past')
-@login_required
-def student_history_past(id):
-    student_history_past = IssuedBooks.query.filter_by(student_id=id, is_returned=True).order_by(desc(IssuedBooks.return_date)).all()
-    return render_template('librarian/student_history.html', student_history=student_history_past, is_current=False, student_id=id)
+
 '''END OF LIBRARIAN PAGES'''

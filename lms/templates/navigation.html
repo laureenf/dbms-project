@@ -78,8 +78,8 @@
                             <i class="fa fa-pencil"></i> Change Email</a>
                         <a class="dropdown-item" href="{{ url_for('change_password') }}">
                             <i class="fa fa-pencil"></i> Change Password</a>
-                        <div class="dropdown-divider"></div>
                         {% if session['user_type'] == 'admin' %}
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url_for('delete_account') }}">
                             <i class="fa fa-ban"></i> Delete Account</a>
                         {% endif %}
