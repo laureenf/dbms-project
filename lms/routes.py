@@ -141,6 +141,7 @@ def add_librarian():
         db.session.add(librarian)
         db.session.commit()
         flash(f'Account created for {form.username.data} from {current_user.institute}! Please login to access', 'success')
+        flash('* hello bitch')
         return redirect(url_for('add_librarian'))
     return render_template('admin/add_librarian.html', title='Add Librarian', form=form)
 
