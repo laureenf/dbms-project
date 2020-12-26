@@ -17,7 +17,6 @@ db.session.execute(text('PRAGMA foreign_keys = ON'))
 def page_not_found(error):
     return render_template('page_not_found.html'), 404 
 
-
 ''' LANDING PAGE '''
 @app.route('/')
 @app.route('/home')
