@@ -4,17 +4,19 @@
 <title>Librarian | View Book History</title>
 {% endblock %}
 {% block content %}
-<div class="btn-group mb-2" role="group">
-    <a role="button" class="btn btn-light {{ 'active' if is_current }}" href="{{url_for('book_history_current', id=book_id)}}">Current</a>
-    <a role="button" class="btn btn-light {{ 'active' if not is_current }}" href="{{url_for('book_history_past', id=book_id)}}">Past</a>
-</div>
-<div class="section-content text-warning">
+
+<div class="section-content text-warning view-table">
+    
     <legend class="border-bottom border-light mb-4">
         Student History - 
         {% if is_current %} Current
         {% else %} Past
         {% endif %}
     </legend>
+    <div class="btn-group mb-2" role="group">
+        <a role="button" class="btn btn-light {{ 'active' if is_current }}" href="{{url_for('book_history_current', id=book_id)}}">Current</a>
+        <a role="button" class="btn btn-light {{ 'active' if not is_current }}" href="{{url_for('book_history_past', id=book_id)}}">Past</a>
+    </div>
     <input class="form-control mt-2 mb-2" type="search" id="search-box" onkeyup="filterByName()" placeholder="Search by Name...">
     <div class="table-responsive">
     <table class="table table-hover table-bordered" id='table'>

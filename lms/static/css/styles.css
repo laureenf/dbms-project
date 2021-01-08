@@ -2,6 +2,7 @@ html, body {
     background-image: url('../images/books1.jpg');
     background-size: cover;
     background-attachment: fixed;
+    width: 100%;
 }
 
 /* main container */
@@ -24,12 +25,24 @@ html, body {
     font-size: 3vw;
 }
 
+.flash-msg {
+    width: 600px;
+    margin: auto;
+}
+
+
+
 /* bg and padding for all sections */
 .section-content {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 15px;
+    width: 600px;
+    margin: auto;
 }
 
+.view-table {
+    width: 800px;
+}
 /* center nil when table for view is empty */
 td[colspan]:not([colspan="1"]) {
     text-align: center;

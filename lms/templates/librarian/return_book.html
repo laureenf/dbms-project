@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
-    <a role="button" class="btn btn-light {{ 'active' if active_page == 'issue' }}" href="{{url_for('issue_book')}}">Book Issue</a>
-    <a role="button" class="btn btn-light {{ 'active' if active_page == 'return' }}" href="{{url_for('return_book')}}">Book Return</a>
-</div>
+
 <div class="section-content text-warning">
     <form action="" method="POST">
         <fieldset class="form-group">
             <legend class="border-bottom border-light mb-4">{{ title }}</legend>
+            <div class="btn-group mb-2" role="group" aria-label="Issue and Return Books">
+                <a role="button" class="btn btn-light {{ 'active' if active_page == 'issue' }}" href="{{url_for('issue_book')}}">Book Issue</a>
+                <a role="button" class="btn btn-light {{ 'active' if active_page == 'return' }}" href="{{url_for('return_book')}}">Book Return</a>
+            </div>
             <div class="form-group">
                 <label for="">Enter Book ID</label>
                 <input type="number" class="form-control" name="book_id" id="" >
